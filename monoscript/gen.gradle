@@ -1,0 +1,74 @@
+import groovy.json.JsonGenerator
+import groovy.xml.XmlNodePrinter
+import groovy.xml.XmlParser
+
+import java.nio.file.Files
+import java.util.stream.Collectors
+tasks.register('copyRag', Copy) {
+    dependsOn(tasks.compileTestJava)
+    dependsOn(tasks.parseFeatureFiles)
+    description = 'Копирование RAG в папку .ai'
+    group = 'documentation'
+
+
+    def outputFile = file("$parent.projectDir/.ai/doc")
+    outputFile.parentFile.mkdirs()
+
+    from fileTree(dir: "$projectDir/build/generated/sources/annotationProcessor/java/test", include: '*.json'),
+            fileTree(dir: "$projectDir/build", include: '*.json')
+    into outputFile
+}
+
+
+tasks.register("parseFeatureFiles") {
+    group = 'documentation'
+    description = 'Сканирование файлов TNNN.feature на классы'
+
+
+    def outputFile = file("$buildDir/feature.json")
+
+    doLast {
+        def featureFiles = []
+
+        project.fileTree(dir: 'src/test/resources/features', include: ['**/*.feature'])
+                .each { file ->
+                    if (file.name.matches("T\\d{2,}\\.feature")) {
+                        featureFiles.add(file)
+                    }
+                }
+
+        def entitiesByFile = [:]
+
+        featureFiles.each { file ->
+            def foundEntities = new TreeSet()
+            def test = Files.readAllLines(file.toPath()).stream()
+                    .map { it.trim() }
+                    .filter { it.startsWith("And") || it.startsWith("Given") || it.startsWith("When") || it.startsWith("Then") || it.startsWith("But") || it.startsWith("|") || it.startsWith("#") }
+                    .collect(Collectors.joining('\n'))
+                    .trim()
+
+            def matcher = test =~ /(?:And|Given|Then|When|But) *(?:(?:Ищу|Обновляю|Удаляю) *(\b[A-Z][a-zA-Z]+\b)|(?:Отправляю|Генерирую).*(\b[A-Z][a-zA-Z]+\b))/
+
+            while (matcher.find()) {
+                def entity = matcher.group(1)
+                def service = matcher.group(2)
+                if (entity != null) foundEntities << entity
+                if (service != null) foundEntities << service
+            }
+
+            if (!foundEntities.isEmpty()) {
+                def fileNameWithoutExtension = file.getName().replace(".feature", "")
+                entitiesByFile.put(fileNameWithoutExtension, ["classes": foundEntities, "text": "Feature: TXXXX\nScenario:\n$test"])
+            }
+        }
+
+        JsonGenerator generator = new JsonGenerator.Options()
+                .disableUnicodeEscaping()
+                .build()
+
+        outputFile.parentFile.mkdirs()
+        outputFile.withPrintWriter { out ->
+            out.println(generator.toJson(entitiesByFile))
+        }
+    }
+}

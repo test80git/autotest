@@ -1,0 +1,86 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+buildscript {
+    ext {
+        reportsDir = "${project.buildDir}/reports"
+    }
+//    apply from: "../repositories.gradle"
+//    dependencies {
+//        classpath("ru.sberbank.dgm_efx:adaptavist-allure-gradle-plugin:2.1.14:all") {
+//            transitive = false
+//        }
+        //		classpath("org.springframework.cloud:spring-cloud-contract-gradle-plugin:${springCloudVersion}")
+        // 		classpath('org.springframework.cloud:spring-cloud-starter-openfeign:3.1.0')
+//    }
+}
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+    id 'io.qameta.allure' version "${allureGradlePluginVersion}"
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+group = 'ru.sber.cb.ekp'
+version = '0.0.1-SNAPSHOT'
+
+//apply plugin: 'ru.sberbank.dgm_efx'
+apply from: "dependencies.gradle"
+//apply from: "../repositories.gradle"
+//apply from: "gen.gradle"
+//apply from: "../checkstyle.gradle"
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    testCompileOnly {
+        extendsFrom testAnnotationProcessor
+    }
+}
+
+processResources {
+    filesMatching('datasources.properties') {
+        filter ReplaceTokens, beginToken: '${', endToken: '}', tokens: [
+                'db.loans.username'  : project.findProperty('db.loans.username') ?: '',
+                'db.loans.password'  : project.findProperty('db.loans.password') ?: '',
+        ]
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-encoding', 'UTF-8']
+}
+
+tasks.withType(Test) {
+    systemProperty "file.encoding", "UTF-8"
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.named('test') {
+    doFirst {
+        delete "build/reports"
+        delete "build/allure"
+        delete "build/allure-results"
+    }
+
+    systemProperty "allure.results.directory", "build/allure-results"
+    useJUnitPlatform()
+    systemProperty "tests", "runners.RunnerTest"
+
+    if (System.getProperty("tags")) {
+        systemProperty "cucumber.filter.tags", System.getProperty("tags")
+    }
+
+    finalizedBy 'allureReport'
+}

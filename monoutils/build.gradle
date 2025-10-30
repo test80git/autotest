@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group = 'ru.sber.cb.ekp'
+version = '0.0.1-SNAPSHOT'
+description = 'monoutils'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.springframework.data:spring-data-commons:3.4.3")
+    implementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation platform ('org.junit:junit-bom:5.10.0')
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

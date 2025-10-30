@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: postscript
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show_sql: true
+    properties:
+      hibernate:
+        jdbc:
+          fetch_size: 100
+
+        format_sql: true
+  aop:
+    auto: false
+  aspectj:
+    enabled: false
+
+cucumber:
+  glue: steps
+  plugin: pretty,html:build/cucumber/report.html
+logging:
+  level:
+    root: info
+    org.hibernate.SQL: DEBUG
+    com.zaxxer.hikari: ERROR

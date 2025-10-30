@@ -1,0 +1,77 @@
+dependencyManagement {
+    imports {
+        mavenBom "io.cucumber:cucumber-bom:${cucumberVersion}"
+        mavenBom "org.junit:junit-bom:${junitVersion}"
+        mavenBom "io.qameta.allure:allure-bom:${allureVersion}"
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+    }
+}
+
+configurations {
+    aspectjweaver
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    testCompileOnly {
+        extendsFrom testAnnotationProcessor
+    }
+}
+
+dependencies {
+    implementation project(':monoutils')
+    testImplementation project(':monoutils')
+
+    annotationProcessor project(':bamboo')
+    compileOnly project(':bamboo')
+
+    testAnnotationProcessor project(':bamboo')
+    testCompileOnly project(':bamboo')
+
+//    implementation project(':openapi')
+//    testImplementation project(':openapi')
+
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${springCloudVersion}"
+    implementation 'org.postgresql:postgresql:42.6.0'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    implementation 'jakarta.validation:jakarta.validation-api:2.0.2'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.2'
+
+    implementation 'jakarta.platform:jakarta.jakartaee-api:10.0.0'
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+    compileOnly 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+    testCompileOnly 'org.projectlombok:lombok:1.18.36'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'
+
+    runtimeOnly "org.aspectj:aspectjrt:${aspectjVersion}"
+    compileOnly "org.aspectj:aspectjweaver:${aspectjVersion}"
+    aspectjweaver "org.aspectj:aspectjweaver:${aspectjVersion}"
+
+    testRuntimeOnly "org.aspectj:aspectjrt:${aspectjVersion}"
+    testCompileOnly "org.aspectj:aspectjweaver:${aspectjVersion}"
+//    testImplementation "org.aspectj:aspectjrt:${aspectjVersion}"
+//    testImplementation "org.aspectj:aspectjweaver:${aspectjVersion}"
+
+    testImplementation 'io.qameta.allure:allure-cucumber7-jvm'
+    testImplementation 'io.qameta.allure:allure-junit5'
+    testImplementation "io.qameta.allure:allure-junit-platform"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.cloud:spring-cloud-starter-openfeign:${springCloudVersion}"
+
+    testImplementation "io.cucumber:cucumber-java"
+    testImplementation "io.cucumber:cucumber-junit"
+    testImplementation "io.cucumber:cucumber-junit-platform-engine"
+    testImplementation "io.cucumber:cucumber-spring"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.junit.platform:junit-platform-suite'
+    testImplementation 'org.junit.platform:junit-platform-suite-engine'
+
+}

@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group = 'ru.sber.cb.ekp'
+version = '0.0.1-SNAPSHOT'
+description = 'postscript'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

@@ -1,0 +1,5 @@
+rootProject.name = 'postscript'
+
+include 'bamboo'
+include 'monoutils'
+include 'monoscript'
