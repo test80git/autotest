@@ -79,7 +79,7 @@ public class DbSteps extends SpringIntegrationTest {
 //        }
     }
 
-    @Given("Ищу AutoLoanStore с PrCred")
+    @Given("Поиск AutoLoanStore с PrCred")
     @Transactional(transactionManager = "zalogsTransactionManager", readOnly = true)
     public void findAutoLoanStoresWithPrCred() {
 //        log.info("Начало поиска первого AutoLoanStore с PrCred");
@@ -105,7 +105,7 @@ public class DbSteps extends SpringIntegrationTest {
 //        }
     }
 
-    @Given("Ищу AutoLoanStore без PrCred")
+    @Given("Поиск AutoLoanStore без PrCred")
     @Transactional(transactionManager = "zalogsTransactionManager", readOnly = true)
     public void findAutoLoanStoresWithoutPrCred() {
 //        log.info("Начало поиска первого AutoLoanStore без PrCred");
@@ -131,7 +131,7 @@ public class DbSteps extends SpringIntegrationTest {
 //        }
     }
 
-    @Given("Ищу PrCred по условию SmsPostZalog")
+    @Given("Поиск PrCred по условию SmsPostZalog")
     @Transactional(transactionManager = "loansTransactionManager", readOnly = true)
     public void findPrCredSmsPostZalog(DataTable dataTable) {
 //        Map<String, String> dt = dataTable.asMap(String.class, String.class);
