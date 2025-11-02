@@ -67,6 +67,14 @@ tasks.withType(Javadoc) {
     options.encoding = 'UTF-8'
 }
 
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
+
 tasks.named('test') {
     doFirst {
         delete "build/reports"
