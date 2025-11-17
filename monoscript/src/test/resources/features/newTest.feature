@@ -1,4 +1,5 @@
 @newTest
+@prcred
 @link=https://jira.t.ru/secure/Tests.jspa#/testCase/newTest
 Feature:
 
