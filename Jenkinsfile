@@ -14,14 +14,14 @@ pipeline {
         stage('Diagnostics') {
             steps {
                 bat '''
-                    echo === Diagnostics ===
-                    echo Current directory: %CD%
-                    echo Files in directory:
-                    dir /B *.bat *.gradle
-                    echo Java version:
-                    java -version
-                    echo Gradle version:
-                    call gradlew.bat --version
+                echo === Project Structure ===
+                  dir /B
+                  echo                              === Available tasks in monoscript ===
+                  call gradlew.bat :monoscript:tasks --no-daemon
+                  echo                                       === Test classes ===
+                  dir monoscript\\src\\test\\java /S /B
+                  echo                                     === Cucumber features ===
+                  dir monoscript\\src\\test\\resources\\features /S /B *.feature
                 '''
             }
         }
@@ -39,7 +39,8 @@ pipeline {
             steps {
                 bat '''
                     echo Running tests...
-                    call gradlew.bat :monoscript:clean :monoscript:test --no-daemon
+                    call gradlew.bat test --info
+
                 '''
             }
         }
