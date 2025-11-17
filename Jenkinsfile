@@ -40,6 +40,7 @@ pipeline {
                 bat '''
                     echo Running tests...
                     call gradlew.bat test --info
+
                 '''
             }
         }
