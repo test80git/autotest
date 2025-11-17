@@ -1,4 +1,5 @@
 @Test1
+@prcred
 @link=https://jira.t.ru/secure/Tests.jspa#/testCase/Test1
 Feature:
 
