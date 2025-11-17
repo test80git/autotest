@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.sber.cb.ekp.avtokflekp.subsystem.loans.entity.PrCred;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Repository
@@ -23,4 +24,5 @@ public interface IPrCredRepository extends JpaRepository<PrCred, Long> {
     @Query("select pc from PrCred pc WHERE pc.summaDog < :sumdog order by pc.summaDog desc ")
     Stream<PrCred> findPrCredBySumDogLessOrderByDesc(@Param("sumdog") BigDecimal sumdog);
 
+    Optional<PrCred> findPrCredById(Long id);
 }
