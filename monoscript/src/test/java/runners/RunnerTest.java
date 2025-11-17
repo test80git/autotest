@@ -17,7 +17,7 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PUBLISH_QUIET_P
 @SelectClasspathResource("features")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "steps")
 @ConfigurationParameter(key = PLUGIN_PUBLISH_QUIET_PROPERTY_NAME, value = "true")
-@ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "@newTest")
+@ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "@Test2")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty, summary, io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm")
 @SpringBootTest
 public class RunnerTest {
