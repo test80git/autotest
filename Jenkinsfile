@@ -7,9 +7,9 @@ pipeline {
                 GRADLE_OPTS = '-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8'
     }
 
-        triggers {
-            pollSCM('*/2 * * * *') // Каждые 2 минут
-        }
+//         triggers {
+//             pollSCM('*/2 * * * *') // Каждые 2 минут
+//         }
 
     stages {
         stage('Checkout') {
